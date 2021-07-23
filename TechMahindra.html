@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CSS Template</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+header {
+  background-color: #0000CD;
+  padding: 20px;
+  text-align: right;
+  font-size: 20px;
+  color: #FFF;
+}
+header a {
+  color: #FFF;
+  margin-right: 5px;
+}
+footer {
+  background-color: #0000CD;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+footer p {
+  margin: 0;
+}
+#home {
+ padding:  50px;
+ text-align: center;
+}
+#about {
+ display: none;
+ padding:  50px;
+ text-align: center;
+}
+#users {
+ display: none;
+}
+table {
+  margin: 20px;
+  width: 97%;
+  border: 1px solid #000;
+  border-collapse: collapse;
+  text-align: left;
+}
+table th {
+  width: 25%;
+  padding: 10px;
+  background-color: #ededed;
+}
+table td {
+  width: 25%;
+  padding: 10px;
+}
+.addBtn {
+  float: right;
+  margin: 20px 20px 20px 0;
+  background-color: blue;
+  color: white;
+}
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+form div {
+  padding-bottom: 20px;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <a href="#home" onclick="homefn()">Home</a>
+  <a href="#about" onclick="aboutfn()">About Us</a>
+  <a href="#users" onclick="usersfn()">Users</a>
+</header>
+<div id="home">
+  Home
+</div>
+<div id="about">
+  About
+</div>
+<div id="users">
+  <button class="addBtn" onclick="openModal('add')">ADD</button>
+  <table border="1">
+  <thead>
+    <tr>
+      <th>S.No</th>
+      <th>User Name</th>
+      <th>Login ID</th>
+      <th>Date of Birth</th>
+      <th>Mobile Number</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="tableData">
+    
+  </tbody>
+</table>
+</div>
+<footer>
+  <p>Footer</p>
+</footer>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+   <form id="myForm" name="myForm">
+  <div>User Name: <input type="text" name="userName"></div>
+  <div>Login Id: <input type="text" name="loginId"></div>
+  <div>Date of birth: <input type="text" name="dob"></div>
+  <div>Mobile Number: <input type="text" name="mobileNo"></div>
+  <div>Status: <input type="text" name="status"></div>
+  <button id="adBtn" onclick="addValues()">Add</buttton>
+  <button id="saveBtn" onclick="editValues()">Save</buttton>
+  <button id="saveBtn" onclick="clearValues()">Clear</buttton>
+   </form>
+  </div>
+
+</div>
+</body>
+<script>
+
+// displaying home,about and user pages
+ function homefn() {
+    document.getElementById('home').style.display= 'block';
+    document.getElementById('about').style.display= 'none';
+    document.getElementById('users').style.display= 'none';
+  }
+  function aboutfn() {
+    document.getElementById('home').style.display= 'none';
+    document.getElementById('about').style.display= 'block';
+    document.getElementById('users').style.display= 'none';
+  }
+  function usersfn() {
+    document.getElementById('home').style.display= 'none';
+    document.getElementById('about').style.display= 'none';
+    document.getElementById('users').style.display= 'block';
+  }
+  
+
+  var userDetails = 
+  [{
+    "s_no":"1",
+    "User_Name":"xxx",
+    "Login_Id":"xxxx@xxx.xx",
+    "Date_0f_Birth":"dd-MM-YYY",
+    "Mobile_Number":"0123456789",
+    "Status":"Active",
+    "Action":"Edit/Delete"
+  },
+  {
+    "s_no":"2",
+    "User_Name":"xxx",
+    "Login_Id":"xxxx@xxx.xx",
+    "Date_0f_Birth":"dd-MM-YYY",
+    "Mobile_Number":"0123456789",
+    "Status":"Active",
+    "Action":"Edit/Delete"
+  },
+  {
+    "s_no":"3",
+    "User_Name":"xxx",
+    "Login_Id":"xxxx@xxx.xx",
+    "Date_0f_Birth":"dd-MM-YYY",
+    "Mobile_Number":"0123456789",
+    "Status":"Active",
+    "Action":"Edit/Delete"
+  }]
+
+  var cells;
+
+  // dynamically adding table rows
+   var k = '<tbody>'
+   var edit = 'edit'
+    for(i = 0;i < userDetails.length; i++){
+        k+= '<tr>';
+        k+= '<td>' + userDetails[i].s_no + '</td>';
+        k+= '<td>' + userDetails[i].User_Name + '</td>';
+        k+= '<td>' + userDetails[i].Login_Id + '</td>';
+        k+= '<td>' + userDetails[i].Date_0f_Birth + '</td>';
+        k+= '<td>' + userDetails[i].Mobile_Number + '</td>';
+        k+= '<td>' + userDetails[i].Status + '</td>';
+        k+= '<td><button type="button" onclick="openModal(edit)">'+ userDetails[i].Action.split('/')[0]+ '</button><button type="button" onclick="deleteRow(this)">'+ userDetails[i].Action.split('/')[1]+ '</button></td>';
+        k+= '</tr>';
+    }
+    k+='</tbody>';
+    document.getElementById('tableData').innerHTML = k;
+
+// delete table row function
+function deleteRow(r) {
+  var i = r.parentNode.parentNode.rowIndex;
+  document.getElementById("tableData").deleteRow(i);
+}
+  
+// popup show function
+function openModal(b) {
+    document.getElementById("myModal").style.display = "block";
+  if(b === 'add') {
+    document.getElementById("adBtn").style.display = "block";
+    document.getElementById("saveBtn").style.display = "none";
+    document.forms["myForm"]["userName"].value = '';
+  document.forms["myForm"]["loginId"].value = '';
+  document.forms["myForm"]["dob"].value = '';
+  document.forms["myForm"]["mobileNo"].value = '';
+  document.forms["myForm"]["status"].value= '';
+  } else if(b === 'edit') {
+    document.getElementById("saveBtn").style.display = "block";
+    document.getElementById("adBtn").style.display = "none";
+    var table = document.getElementsByTagName("table")[0];
+var tbody = table.getElementsByTagName("tbody")[0];
+tbody.onclick = function (e) {
+     var data = [];
+        cells = e.target.parentNode.parentNode.cells;
+        for (var i = 0; i < cells.length; i++) {
+         data.push(cells[i].innerHTML);
+        }
+    document.forms["myForm"]["userName"].value = data[1];
+  document.forms["myForm"]["loginId"].value = data[2];
+  document.forms["myForm"]["dob"].value = data[3];
+  document.forms["myForm"]["mobileNo"].value = data[4];
+  document.forms["myForm"]["status"].value= data[5];
+    };
+  }
+
+}
+// popup close function
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
+}
+var form = document.getElementById("myForm");
+function handleForm(event) { event.preventDefault(); } 
+form.addEventListener('submit', handleForm);
+
+// edit table row values
+function editValues() {
+  cells[1].innerHTML = document.forms["myForm"]["userName"].value;
+  cells[2].innerHTML = document.forms["myForm"]["loginId"].value;
+  cells[3].innerHTML = document.forms["myForm"]["dob"].value;
+  cells[4].innerHTML = document.forms["myForm"]["mobileNo"].value;
+  cells[5].innerHTML = document.forms["myForm"]["status"].value;
+  closeModal();
+}
+
+function clearValues() {
+  document.forms["myForm"]["userName"].value = '';
+  document.forms["myForm"]["loginId"].value = '';
+  document.forms["myForm"]["dob"].value = '';
+  document.forms["myForm"]["mobileNo"].value = '';
+  document.forms["myForm"]["status"].value= '';
+}
+ 
+// add new table row
+function addValues() {
+  
+  let obj_= {
+    "s_no":"",
+    "User_Name":"",
+    "Login_Id":"",
+    "Date_0f_Birth":"",
+    "Mobile_Number":"",
+    "Status":"",
+    "Action":"Edit/Delete"
+  }
+  
+  obj_.s_no = userDetails.length + 1;
+  obj_.User_Name = document.forms["myForm"]["userName"].value;
+  obj_.Login_Id = document.forms["myForm"]["loginId"].value;
+  obj_.Date_0f_Birth = document.forms["myForm"]["dob"].value;
+  obj_.Mobile_Number = document.forms["myForm"]["mobileNo"].value;
+  obj_.Status = document.forms["myForm"]["status"].value;
+
+if (obj_.User_Name==null || obj_.User_Name=="" ){  
+  alert("User Name is required");  
+  return false;  
+} 
+if (obj_.Login_Id==null || obj_.Login_Id=="" ){  
+  alert("Login Id is required");  
+  return false;  
+} 
+if (obj_.Date_0f_Birth==null || obj_.Date_0f_Birth=="" ){  
+  alert("Date of birth is required");  
+  return false;  
+}
+if (obj_.Mobile_Number==null || obj_.Mobile_Number=="" ){  
+  alert("Mobile Number is required");  
+  return false;  
+} 
+if (obj_.Status==null || obj_.Status=="" ){  
+  alert("Status is required");  
+  return false;  
+}
+  
+  userDetails.push(obj_);
+  
+  var b = '<tbody>';
+   var index = userDetails.length - 1;
+        b+= '<tr>';
+        b+= '<td>' + userDetails[index].s_no + '</td>';
+        b+= '<td>' + userDetails[index].User_Name + '</td>';
+        b+= '<td>' + userDetails[index].Login_Id + '</td>';
+        b+= '<td>' + userDetails[index].Date_0f_Birth + '</td>';
+        b+= '<td>' + userDetails[index].Mobile_Number + '</td>';
+        b+= '<td>' + userDetails[index].Status + '</td>';
+        b+= '<td><button type="button" onclick="openModal(edit)">'+ userDetails[index].Action.split('/')[0]+ '</button><button type="button" onclick="deleteRow(this)">'+ userDetails[index].Action.split('/')[1]+ '</button></td>';
+        b+= '</tr>';
+        b+= '<tbody>'
+        document.getElementById('tableData').innerHTML += b;
+  document.forms["myForm"]["userName"].value = '';
+  document.forms["myForm"]["loginId"].value = '';
+  document.forms["myForm"]["dob"].value = '';
+  document.forms["myForm"]["mobileNo"].value = '';
+  document.forms["myForm"]["status"].value= '';
+  closeModal();
+ }
+    
+
+</script>
+</html>
